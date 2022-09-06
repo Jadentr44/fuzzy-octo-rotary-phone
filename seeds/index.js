@@ -1,5 +1,5 @@
-const { Product } = require('../models');
-
+const sequelize = require('../config/connections');
+const Product = require('../models/Product')
 const productData = [
   {
     productName: 'hat',
@@ -33,6 +33,12 @@ const productData = [
   },
 ];
 
-const seedProducts = () => Product.bulkCreate(productData);
+const seedAll = async () => {
+  await sequelize.sync();
+  console.log('\n----- DATABASE SYNCED -----\n');
+  
+  const product = await Product.bulkCreate(productData);
+  process.exit(0);
+};
 
-module.exports = seedProducts;
+seedAll();
